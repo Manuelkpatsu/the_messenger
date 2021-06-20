@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "657876421018",
+    "project_id": "the-messenger-f4769",
+    "storage_bucket": "the-messenger-f4769.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657876421018:android:f8a551a6a5830648fc5223",
+        "android_client_info": {
+          "package_name": "com.example.the_messenger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "657876421018-jscf7su4had4spdq6g2r52u9vkbieerl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUcsRqpPvwB2O4T88l3bjVras5SAn4Y6g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "657876421018-jscf7su4had4spdq6g2r52u9vkbieerl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
