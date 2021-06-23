@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import '../widgets/auth/auth_form.dart';
 
@@ -14,8 +17,14 @@ class _AuthScreenState extends State<AuthScreen> {
   final _auth = FirebaseAuth.instance;
   var _isLoading = false;
 
-  void _submitAuthForm(String email, String password, String username,
-      bool isLogin, BuildContext ctx) async {
+  void _submitAuthForm(
+    String email,
+    String password,
+    String username,
+    File image,
+    bool isLogin,
+    BuildContext ctx,
+  ) async {
     UserCredential userCredential;
 
     try {
@@ -33,13 +42,33 @@ class _AuthScreenState extends State<AuthScreen> {
           email: email,
           password: password,
         );
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(userCredential.user.uid)
-            .set({
-          'username': username,
-          'email': email,
-        });
+
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('user_image')
+            .child(userCredential.user.uid + '.jpg');
+
+        final TaskSnapshot snapshot = await ref.putFile(image);
+
+        if (snapshot.state == TaskState.success) {
+          final String url = await snapshot.ref.getDownloadURL();
+
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(userCredential.user.uid)
+              .set({
+            'username': username,
+            'email': email,
+            'image_url': url
+          });
+        } else {
+          ScaffoldMessenger.of(ctx).showSnackBar(
+            SnackBar(
+              content: Text('There was an issue uploading the image'),
+              backgroundColor: Theme.of(ctx).errorColor,
+            ),
+          );
+        }
       }
     } on PlatformException catch (err) {
       var message = 'An error occurred, please check your credentials!';
